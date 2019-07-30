@@ -430,9 +430,16 @@ public class Board
 		return kingMoves;
 	}
 	
-	public boolean isMoveLegal(Piece piece, Move move)
+	public boolean isMoveLegal(Piece piece, int row, int col)
 	{
-		// TODO
+		Move[] possibleMoves = piece.getPossibleMoves();
+		for(Move move: possibleMoves)
+		{
+			if(move.getRow() == row && move.getCol() == col)
+			{
+				return true;
+			}
+		}
 		return false;
 	}
 	public boolean checkIsStillOnTheBoard(int row, int col)

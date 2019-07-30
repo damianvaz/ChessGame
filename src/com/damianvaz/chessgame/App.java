@@ -28,6 +28,7 @@ public class App extends Application
 	{
 		mainWindow = new MainWindow("Chess");
 		primaryStage = mainWindow;
+		//TODO check if it's really necessary to have white's and black's pieces as instanve variables 
 		//Piece[] whitePieces = makeWhitePieces();
 		//Piece[] blackPieces = makeBlackPieces();
 		makeAllPieces();
@@ -57,7 +58,7 @@ public class App extends Application
 				piece.setTranslateX(originalTranslateX);
 				piece.setTranslateY(originalTranslateY);
 			}
-
+			
 		});
 	}
 	
