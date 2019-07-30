@@ -176,56 +176,56 @@ public class Board
 		// MOVE 1:
 		int newRow = row - 1;
 		int newCol = col - 2;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
 		// MOVE 2:
 		newRow = row - 2;
 		newCol = col - 1;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
 		// MOVE 3:
 		newRow = row - 2;
 		newCol = col + 1;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
 		// MOVE 4:
 		newRow = row - 1;
 		newCol = col + 2;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
 		// MOVE 5:
 		newRow = row + 1;
 		newCol = col - 2;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
 		// MOVE 6:
 		newRow = row + 2;
 		newCol = col - 1;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
 		// MOVE 7:
 		newRow = row + 2;
 		newCol = col + 1;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
 		// MOVE 8:
 		newRow = row + 1;
 		newCol = col + 2;
-		if (checkIsStillOnTheBoard(newRow, newCol))
+		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
 		{
 			knightMoves.add(new Move(newRow, newCol));
 		}
@@ -246,7 +246,8 @@ public class Board
 
 		// get all the possible moves from the current square and the upper right
 		// diagonal
-		while (rowCount > 0 && colCount < 7 && this.board[rowCount][colCount] == null)
+		//TODO change this because this.board[rowCount][colCount] == null is never null because piece is on it
+		while (rowCount > 0 && colCount < 7 && this.board[rowCount - 1][colCount + 1] == null)
 		{
 			bishopMoves.add(new Move(--rowCount, ++colCount));
 		}
@@ -262,7 +263,7 @@ public class Board
 		colCount = col;
 		// get all the possible moves from the current square and the upper left
 		// diagonal
-		while (rowCount > 0 && colCount > 0 && this.board[rowCount][colCount] == null)
+		while (rowCount > 0 && colCount > 0 && this.board[rowCount - 1][colCount - 1] == null)
 		{
 			bishopMoves.add(new Move(--rowCount, --colCount));
 		}
@@ -270,7 +271,7 @@ public class Board
 		colCount = col;
 		// get all the possible moves from the current square and the bottom left
 		// diagonal
-		while (rowCount < 7 && colCount > 0 && this.board[rowCount][colCount] == null)
+		while (rowCount < 7 && colCount > 0 && this.board[rowCount + 1][colCount - 1] == null)
 		{
 			bishopMoves.add(new Move(++rowCount, --colCount));
 		}
@@ -278,7 +279,7 @@ public class Board
 		colCount = col;
 		// get all the possible moves from the current square and the bottom right
 		// diagonal
-		while (rowCount < 7 && colCount < 7 && this.board[rowCount][colCount] == null)
+		while (rowCount < 7 && colCount < 7 && this.board[rowCount + 1][colCount + 1] == null)
 		{
 			bishopMoves.add(new Move(++rowCount, ++colCount));
 		}
@@ -299,6 +300,7 @@ public class Board
 		for (int i = col + 1; i < 8 && this.board[row][i] == null; i++)
 		{
 			rookMoves.add(new Move(row, i));
+			System.out.println("new Rook move:" + row + ", " + i);
 		}
 		// Get all the moves possible from the current col and down
 		for (int i = col - 1; i >= 0 && this.board[row][i] == null; i--)
@@ -396,7 +398,7 @@ public class Board
 		}
 		// MOVE 6:
 		newRow = row + 1;
-		newCol = col;
+		newCol = col - 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
 			if(this.board[newRow][newCol] == null)
@@ -432,12 +434,16 @@ public class Board
 	
 	public boolean isMoveLegal(Piece piece, int row, int col)
 	{
+		getAllPossibleMoves(true); // just to test
 		Move[] possibleMoves = piece.getPossibleMoves();
-		for(Move move: possibleMoves)
+		if(possibleMoves != null)
 		{
-			if(move.getRow() == row && move.getCol() == col)
+			for(Move move: possibleMoves)
 			{
-				return true;
+				if(move.getRow() == row && move.getCol() == col)
+				{
+					return true;
+				}
 			}
 		}
 		return false;
@@ -451,5 +457,17 @@ public class Board
 		{
 			return true;
 		}
+	}
+	public void emptySquare(int row, int col)
+	{
+		this.board[row][col] = null;
+		System.out.println("emptied square");
+	}
+
+	public void fillSquare(Piece piece)
+	{
+		int row = piece.getRow();
+		int col = piece.getCol();
+		this.board[row][col] = piece;
 	}
 }

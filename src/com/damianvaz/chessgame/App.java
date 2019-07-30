@@ -47,16 +47,21 @@ public class App extends Application
 
 			// if is a square that the piece can go, (not considering blocking pieces or if
 			// it's a legal move) move the piece there both in view and in piece values
-			if (piece.canPieceMoveHere(newSquareRow, newSquareCol))
+			// if (piece.canPieceMoveHere(newSquareRow, newSquareCol))
+			if (board.isMoveLegal(piece, newSquareRow, newSquareCol))
 			{
+				board.emptySquare(piece.getRow(), piece.getCol());
 				piece.setRow(newSquareRow);
 				piece.setCol(newSquareCol);
+				board.fillSquare(piece);
 				piece.setTranslateX(newTranslateX);
 				piece.setTranslateY(newTranslateY);
+				System.out.println("Moved");
 			} else // if not move piece back to original square
 			{
 				piece.setTranslateX(originalTranslateX);
 				piece.setTranslateY(originalTranslateY);
+				System.out.println("didnt move");
 			}
 			
 		});
