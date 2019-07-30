@@ -15,8 +15,8 @@ public class Rook extends Piece
 		this.row = row;
 		this.col = col;
 		this.isWhite = isWhite;
-		// TODO check if isWhite then add image accordingly
-		Image image = new Image(getClass().getResourceAsStream("/images/rookW.png"));
+		String img = isWhite ? "/images/rookW.png" : "/images/rookB.png";
+		Image image = new Image(getClass().getResourceAsStream(img));
 		setGraphic(new ImageView(image));
 	}
 	/**

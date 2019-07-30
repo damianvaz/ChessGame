@@ -19,8 +19,8 @@ public class King extends Piece
 		this.col = col;
 		this.isWhite = isWhite;
 		this.hasMoved = false;
-		// TODO check if isWhite then add image accordingly
-		Image image = new Image(getClass().getResourceAsStream("/images/kingW.png"));
+		String img = isWhite ? "/images/kingW.png" : "/images/kingB.png";
+		Image image = new Image(getClass().getResourceAsStream(img));
 		setGraphic(new ImageView(image));
 	}
 

@@ -15,8 +15,8 @@ public class Bishop extends Piece
 		this.row = row;
 		this.col = col;
 		this.isWhite = isWhite;
-		// TODO check if isWhite then add image accordingly
-		Image image = new Image(getClass().getResourceAsStream("/images/bishopW.png"));
+		String img = isWhite ? "/images/bishopW.png" : "/images/bishopB.png";
+		Image image = new Image(getClass().getResourceAsStream(img));
 		setGraphic(new ImageView(image));
 	}
 	/**

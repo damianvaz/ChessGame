@@ -15,8 +15,8 @@ public class Queen extends Piece
 		this.row = row;
 		this.col = col;
 		this.isWhite = isWhite;
-		// TODO check if isWhite then add image accordingly
-		Image image = new Image(getClass().getResourceAsStream("/images/queenW.png"));
+		String img = isWhite ? "/images/queenW.png" : "/images/queenB.png";
+		Image image = new Image(getClass().getResourceAsStream(img));
 		setGraphic(new ImageView(image));
 	}
 

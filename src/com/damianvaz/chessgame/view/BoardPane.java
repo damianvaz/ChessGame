@@ -78,12 +78,18 @@ public class BoardPane extends GridPane
 		King king = new King(7, 4, true);
 		Pawn pawn = new Pawn(6, 0, true);
 		
+		Rook rookB = new Rook(0, 7, false);
+		Pawn pawnB = new Pawn(1, 7, false);
+		
 		addPieceToBoardView(rook);
 		addPieceToBoardView(bishop);
 		addPieceToBoardView(knight);
 		addPieceToBoardView(queen);
 		addPieceToBoardView(king);
 		addPieceToBoardView(pawn);
+		
+	//	addPieceToBoardView(rookB);
+	//	addPieceToBoardView(pawnB);
 		
 	}
 	private void addPieceToBoardView(Piece piece)

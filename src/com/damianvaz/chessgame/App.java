@@ -1,6 +1,12 @@
 package com.damianvaz.chessgame;
 
+import com.damianvaz.chessgame.pieces.Bishop;
+import com.damianvaz.chessgame.pieces.King;
+import com.damianvaz.chessgame.pieces.Knight;
+import com.damianvaz.chessgame.pieces.Pawn;
 import com.damianvaz.chessgame.pieces.Piece;
+import com.damianvaz.chessgame.pieces.Queen;
+import com.damianvaz.chessgame.pieces.Rook;
 import com.damianvaz.chessgame.view.MainWindow;
 
 import javafx.application.Application;
@@ -9,6 +15,7 @@ import javafx.stage.Stage;
 public class App extends Application
 {
 	private MainWindow mainWindow;
+	private Board board;
 
 	public static void main(String[] args)
 	{
@@ -20,7 +27,12 @@ public class App extends Application
 	{
 		mainWindow = new MainWindow("Chess");
 		primaryStage = mainWindow;
+		//Piece[] whitePieces = makeWhitePieces();
+		//Piece[] blackPieces = makeBlackPieces();
 
+	//	board = new Board(whitePieces, blackPieces);
+
+		// TODO Don't forget to remove this method from mainWindow
 		mainWindow.addPiecesToBoard();
 		mainWindow.setListener(e ->
 		{
@@ -47,6 +59,32 @@ public class App extends Application
 			}
 
 		});
+	}
+
+	private Piece[] makeBlackPieces()
+	{
+		// TODO Make all the white pieces
+		Piece[] blackPieces = new Piece[6]; // 16 with all the pieces
+		blackPieces[0] = new Pawn(6, 0, false);
+		blackPieces[1] = new Rook(7, 7, false);
+		blackPieces[2] = new Knight(7, 6, false);
+		blackPieces[3] = new Bishop(7, 5, false);
+		blackPieces[4] = new King(7, 4, false);
+		blackPieces[5] = new Queen(7, 3, false);
+		return blackPieces;
+	}
+
+	private Piece[] makeWhitePieces()
+	{
+		// TODO Make all the white pieces
+		Piece[] whitePieces = new Piece[6]; // 16 with all the pieces
+		whitePieces[0] = new Pawn(6, 0, true);
+		whitePieces[1] = new Rook(7, 7, true);
+		whitePieces[2] = new Knight(7, 6, true);
+		whitePieces[3] = new Bishop(7, 5, true);
+		whitePieces[4] = new King(7, 4, true);
+		whitePieces[5] = new Queen(7, 3, true);
+		return whitePieces;
 	}
 
 }

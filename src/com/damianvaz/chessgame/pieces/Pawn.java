@@ -15,8 +15,8 @@ public class Pawn extends Piece
 		this.row = row;
 		this.col = col;
 		this.isWhite = isWhite;
-		// TODO check if isWhite then add image accordingly
-		Image image = new Image(getClass().getResourceAsStream("/images/pawnW.png"));
+		String img = isWhite ? "/images/pawnW.png" : "/images/pawnB.png";
+		Image image = new Image(getClass().getResourceAsStream(img));
 		setGraphic(new ImageView(image));
 	}
 
