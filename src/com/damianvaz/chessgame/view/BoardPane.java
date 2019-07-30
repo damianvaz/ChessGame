@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 public class BoardPane extends GridPane
 {
 	private BorderPane[][] squares = new BorderPane[8][8];
+	//TODO change Squares from panes to backgroing img
 	private String color = "white;";
 	private int squareSide = 80;
 	private double orgSceneX, orgSceneY;
@@ -60,37 +61,16 @@ public class BoardPane extends GridPane
 		}
 	}
 
-	public void addPiecesToBoard()
+	public void addPiecesToBoard(Piece[] whitePieces, Piece[] blackPieces)
 	{
-		/*
-		 * for (int i = 0; i < 8; i++) { Rook rook = new Rook(7, i);
-		 * 
-		 * rook.setOnMousePressed(pieceOnMousePressedEventHandler);
-		 * rook.setOnMouseDragged(pieceOnMouseDraggedEventHandler);
-		 * rook.setOnMouseReleased(pieceOnMouseReleasedEventHandler);
-		 * 
-		 * squares[7][i].setCenter(rook); }
-		 */
-		Rook rook = new Rook(5, 5, true);
-		Bishop bishop = new Bishop(4, 4, true);
-		Knight knight = new Knight(7, 1, true);
-		Queen queen = new Queen(0, 0, true);
-		King king = new King(7, 4, true);
-		Pawn pawn = new Pawn(6, 0, true);
-		
-		Rook rookB = new Rook(0, 7, false);
-		Pawn pawnB = new Pawn(1, 7, false);
-		
-		addPieceToBoardView(rook);
-		addPieceToBoardView(bishop);
-		addPieceToBoardView(knight);
-		addPieceToBoardView(queen);
-		addPieceToBoardView(king);
-		addPieceToBoardView(pawn);
-		
-	//	addPieceToBoardView(rookB);
-	//	addPieceToBoardView(pawnB);
-		
+		for(Piece piece : whitePieces)
+		{
+			addPieceToBoardView(piece);
+		}
+		for(Piece piece : blackPieces)
+		{
+			addPieceToBoardView(piece);
+		}
 	}
 	private void addPieceToBoardView(Piece piece)
 	{

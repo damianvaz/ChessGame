@@ -1,5 +1,7 @@
 package com.damianvaz.chessgame.view;
 
+import com.damianvaz.chessgame.pieces.Piece;
+
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -18,9 +20,9 @@ public class MainWindow extends Stage
 		show();
 	}
 
-	public void addPiecesToBoard()
+	public void addPiecesToBoard(Piece[] whitePieces, Piece[] blackPieces)
 	{
-		boardPane.addPiecesToBoard();
+		boardPane.addPiecesToBoard(whitePieces, blackPieces);
 	}
 
 	public void setListener(MainWindowListener listener)
