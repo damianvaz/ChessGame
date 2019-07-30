@@ -161,6 +161,7 @@ public class Board
 			// TODO make it possible so it can take pieces diagonally
 		}
 		pawnMoves.trimToSize();
+		piece.setPossibleMoves(pawnMoves.toArray(new Move[pawnMoves.size()]));
 		return pawnMoves;
 	}
 
@@ -230,6 +231,7 @@ public class Board
 		}
 
 		knightMoves.trimToSize();
+		piece.setPossibleMoves(knightMoves.toArray(new Move[knightMoves.size()]));
 		return knightMoves;
 	}
 
@@ -283,6 +285,7 @@ public class Board
 
 		// TODO make it so that it can take pieces
 		bishopMoves.trimToSize();
+		piece.setPossibleMoves(bishopMoves.toArray(new Move[bishopMoves.size()]));
 		return bishopMoves;
 	}
 
@@ -316,6 +319,7 @@ public class Board
 
 		// TODO make it so can take pieces
 		rookMoves.trimToSize();
+		piece.setPossibleMoves(rookMoves.toArray(new Move[rookMoves.size()]));
 		return rookMoves;
 	}
 
@@ -329,6 +333,7 @@ public class Board
 		queenMoves.addAll(getRookMoves(piece));
 
 		queenMoves.trimToSize();
+		piece.setPossibleMoves(queenMoves.toArray(new Move[queenMoves.size()]));
 		return queenMoves;
 	}
 
@@ -421,9 +426,15 @@ public class Board
 		}
 
 		kingMoves.trimToSize();
+		piece.setPossibleMoves(kingMoves.toArray(new Move[kingMoves.size()]));
 		return kingMoves;
 	}
-
+	
+	public boolean isMoveLegal(Piece piece, Move move)
+	{
+		// TODO
+		return false;
+	}
 	public boolean checkIsStillOnTheBoard(int row, int col)
 	{
 		if (row < 0 || row > 7 || col < 0 || col > 7)
