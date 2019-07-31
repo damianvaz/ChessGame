@@ -247,10 +247,23 @@ public class Board
 		// get all the possible moves from the current square and the upper right
 		// diagonal
 		//TODO change this because this.board[rowCount][colCount] == null is never null because piece is on it
-		while (rowCount > 0 && colCount < 7 && this.board[rowCount - 1][colCount + 1] == null)
+		
+		while (rowCount > 0 && colCount < 7)
 		{
-			bishopMoves.add(new Move(--rowCount, ++colCount));
+			if(this.board[--rowCount][++colCount] == null)
+			{
+				bishopMoves.add(new Move(rowCount, colCount));
+			} else
+			{
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				if (canTakePiece(piece, anotherPiece))
+				{
+					bishopMoves.add(new Move(rowCount, colCount));
+				}
+			}
 		}
+		
+		
 		// TODO test if this works for the upper diagonal and then apply for the rest
 		/*
 		 * // if there's a piece there, and that piece is a different color, then it can
@@ -263,31 +276,80 @@ public class Board
 		colCount = col;
 		// get all the possible moves from the current square and the upper left
 		// diagonal
-		while (rowCount > 0 && colCount > 0 && this.board[rowCount - 1][colCount - 1] == null)
+		
+		while (rowCount > 0 && colCount > 0)
 		{
-			bishopMoves.add(new Move(--rowCount, --colCount));
+			if(this.board[--rowCount][--colCount] == null)
+			{
+				bishopMoves.add(new Move(rowCount, colCount));
+			} else
+			{
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				if (canTakePiece(piece, anotherPiece))
+				{
+					bishopMoves.add(new Move(rowCount, colCount));
+				}
+			}
 		}
+		
+		
 		rowCount = row;
 		colCount = col;
 		// get all the possible moves from the current square and the bottom left
 		// diagonal
-		while (rowCount < 7 && colCount > 0 && this.board[rowCount + 1][colCount - 1] == null)
+		
+		while (rowCount < 7 && colCount > 0)
 		{
-			bishopMoves.add(new Move(++rowCount, --colCount));
+			if(this.board[++rowCount][--colCount] == null)
+			{
+				bishopMoves.add(new Move(rowCount, colCount));
+			} else
+			{
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				if (canTakePiece(piece, anotherPiece))
+				{
+					bishopMoves.add(new Move(rowCount, colCount));
+				}
+			}
 		}
+		
+		
 		rowCount = row;
 		colCount = col;
 		// get all the possible moves from the current square and the bottom right
 		// diagonal
-		while (rowCount < 7 && colCount < 7 && this.board[rowCount + 1][colCount + 1] == null)
+		
+		while (rowCount < 7 && colCount < 7)
 		{
-			bishopMoves.add(new Move(++rowCount, ++colCount));
+			if(this.board[++rowCount][++colCount] == null)
+			{
+				bishopMoves.add(new Move(rowCount, colCount));
+			} else
+			{
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				if (canTakePiece(piece, anotherPiece))
+				{
+					bishopMoves.add(new Move(rowCount, colCount));
+				}
+			}
 		}
-
-		// TODO make it so that it can take pieces
+		
+		
 		bishopMoves.trimToSize();
 		piece.setPossibleMoves(bishopMoves.toArray(new Move[bishopMoves.size()]));
 		return bishopMoves;
+	}
+
+	private boolean canTakePiece(Piece piece, Piece maybePiece)
+	{
+		if(maybePiece != null)
+		{
+			return piece.isWhite() ^ maybePiece.isWhite();
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	private ArrayList<Move> getRookMoves(Piece piece)
@@ -297,25 +359,60 @@ public class Board
 		int col = piece.getCol();
 
 		// Get all the moves possible from the current col and up
-		for (int i = col + 1; i < 8 && this.board[row][i] == null; i++)
+		for (int i = col + 1; i < 8; i++)
 		{
+			if (this.board[row][i] != null)
+			{
+				Piece anotherPiece = this.board[row][i];
+				if (canTakePiece(piece, anotherPiece))
+				{
+					rookMoves.add(new Move(row, i));
+				}
+				break;
+			}
 			rookMoves.add(new Move(row, i));
-			System.out.println("new Rook move:" + row + ", " + i);
 		}
 		// Get all the moves possible from the current col and down
-		for (int i = col - 1; i >= 0 && this.board[row][i] == null; i--)
+		for (int i = col - 1; i >= 0; i--)
 		{
+			if (this.board[row][i] != null)
+			{
+				Piece anotherPiece = this.board[row][i];
+				if (canTakePiece(piece, anotherPiece))
+				{
+					rookMoves.add(new Move(row, i));
+				}
+				break;
+			}
 			rookMoves.add(new Move(row, i));
 		}
 
 		// Get all the moves possible from the current row and up
-		for (int i = row + 1; i < 8 && this.board[i][col] == null; i++)
+		for (int i = row + 1; i < 8; i++)
 		{
+			if (this.board[i][col] != null)
+			{
+				Piece anotherPiece = this.board[i][col];
+				if (canTakePiece(piece, anotherPiece))
+				{
+					rookMoves.add(new Move(i, col));
+				}
+				break;
+			}
 			rookMoves.add(new Move(i, col));
 		}
 		// Get all the moves possible from the current row and down
-		for (int i = row - 1; i >= 0 && this.board[i][col] == null; i--)
+		for (int i = row - 1; i >= 0; i--)
 		{
+			if (this.board[i][col] != null)
+			{
+				Piece anotherPiece = this.board[i][col];
+				if (canTakePiece(piece, anotherPiece))
+				{
+					rookMoves.add(new Move(i, col));
+				}
+				break;
+			}
 			rookMoves.add(new Move(i, col));
 		}
 
@@ -432,17 +529,22 @@ public class Board
 		return kingMoves;
 	}
 	
-	public boolean isMoveLegal(Piece piece, int row, int col)
+	public boolean isMoveLegal(Piece piece, int row, int col, boolean isWhitesMove)
 	{
-		getAllPossibleMoves(true); // just to test
 		Move[] possibleMoves = piece.getPossibleMoves();
-		if(possibleMoves != null)
+		if(possibleMoves != null && piece.isWhite() == isWhitesMove)
 		{
 			for(Move move: possibleMoves)
 			{
 				if(move.getRow() == row && move.getCol() == col)
 				{
-					return true;
+					if (this.board[row][col] == null || this.board[row][col].isWhite() ^ piece.isWhite())
+					{
+						return true;
+					} else
+					{
+						return false;
+					}
 				}
 			}
 		}
@@ -469,5 +571,10 @@ public class Board
 		int row = piece.getRow();
 		int col = piece.getCol();
 		this.board[row][col] = piece;
+	}
+
+	public Piece getPieceOnSquare(int row, int col)
+	{
+		return this.board[row][col];
 	}
 }

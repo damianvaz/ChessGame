@@ -80,6 +80,7 @@ public class BoardPane extends GridPane
 		
 		setHalignment(piece, HPos.CENTER);
 		add(piece, piece.getCol(), piece.getRow());
+		
 	}
 
 	EventHandler<MouseEvent> pieceOnMousePressedEventHandler = new EventHandler<MouseEvent>()
@@ -147,5 +148,10 @@ public class BoardPane extends GridPane
 	public void setListener(BoardPaneListener listener)
 	{
 		this.listener = listener;
+	}
+
+	public void eatPiece(Piece piece)
+	{
+		getChildren().remove(piece);
 	}
 }

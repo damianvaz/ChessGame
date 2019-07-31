@@ -17,6 +17,7 @@ public class App extends Application
 	private MainWindow mainWindow;
 	private Board board;
 	private Piece[] whitePieces, blackPieces;
+	private boolean isWhitesMove;
 
 	public static void main(String[] args)
 	{
@@ -28,12 +29,13 @@ public class App extends Application
 	{
 		mainWindow = new MainWindow("Chess");
 		primaryStage = mainWindow;
+		isWhitesMove = true;
 		//TODO check if it's really necessary to have white's and black's pieces as instanve variables 
 		//Piece[] whitePieces = makeWhitePieces();
 		//Piece[] blackPieces = makeBlackPieces();
 		makeAllPieces();
 		board = new Board(whitePieces, blackPieces);
-		
+		board.getAllPossibleMoves(isWhitesMove); // populate pieces move array
 		mainWindow.addPiecesToBoard(whitePieces, blackPieces);
 		mainWindow.setListener(e ->
 		{
@@ -48,25 +50,46 @@ public class App extends Application
 			// if is a square that the piece can go, (not considering blocking pieces or if
 			// it's a legal move) move the piece there both in view and in piece values
 			// if (piece.canPieceMoveHere(newSquareRow, newSquareCol))
-			if (board.isMoveLegal(piece, newSquareRow, newSquareCol))
+			if (board.isMoveLegal(piece, newSquareRow, newSquareCol, isWhitesMove))
 			{
+				// check if there's a piece here, and if there is, take it
+				Piece maybePiece = board.getPieceOnSquare(newSquareRow, newSquareCol);
+				if(maybePiece != null)
+				{
+					mainWindow.eatPiece(maybePiece);
+				}
 				board.emptySquare(piece.getRow(), piece.getCol());
 				piece.setRow(newSquareRow);
 				piece.setCol(newSquareCol);
 				board.fillSquare(piece);
 				piece.setTranslateX(newTranslateX);
 				piece.setTranslateY(newTranslateY);
-				System.out.println("Moved");
+				changePiecesToMove();
+				board.getAllPossibleMoves(isWhitesMove);
+				
 			} else // if not move piece back to original square
 			{
 				piece.setTranslateX(originalTranslateX);
 				piece.setTranslateY(originalTranslateY);
-				System.out.println("didnt move");
+				
 			}
 			
 		});
 	}
 	
+	private void changePiecesToMove()
+	{
+		if(isWhitesMove)
+		{
+			isWhitesMove = false;
+		}
+		else
+		{
+			isWhitesMove = true;
+		}
+		
+	}
+
 	private void makeAllPieces()
 	{
 		makeBlackPieces();

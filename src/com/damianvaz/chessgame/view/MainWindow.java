@@ -33,4 +33,9 @@ public class MainWindow extends Stage
 			mainWindowListener.pieceMoved(e);
 		});
 	}
+
+	public void eatPiece(Piece piece)
+	{
+		boardPane.eatPiece(piece);
+	}
 }
