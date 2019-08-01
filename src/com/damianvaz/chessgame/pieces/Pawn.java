@@ -56,6 +56,7 @@ public class Pawn extends Piece
 		Move[] moves = legalMoves.toArray(new Move[legalMoves.size()]);
 		return moves;
 	}
+	
 
 	@Override
 	public boolean canPieceMoveHere(int row, int col)

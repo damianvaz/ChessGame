@@ -136,6 +136,32 @@ public class Board
 		// if its Pawn's first move
 		if (piece.isWhite())
 		{
+			// testing if there's any piece it can take
+			if (row > 0 && col < 7)
+			{
+				// if there's a piece on the right diagonal square
+				if (this.board[row - 1][col + 1] != null)
+				{
+					Piece anotherPiece = this.board[row - 1][col + 1];
+					if (canTakePiece(piece, anotherPiece))
+					{
+						pawnMoves.add(new Move(row - 1, col + 1));
+					}
+				}
+			}
+			if (row > 0 && col > 0)
+			{
+				// if there's a piece on the left diagonal square
+				if (this.board[row - 1][col - 1] != null)
+				{
+					Piece anotherPiece = this.board[row - 1][col - 1];
+					if (canTakePiece(piece, anotherPiece))
+					{
+						pawnMoves.add(new Move(row - 1, col - 1));
+					}
+				}
+			}
+
 			// if there's no piece above it
 			if (this.board[row - 1][col] == null)
 			{
@@ -149,6 +175,32 @@ public class Board
 			// TODO make it possible so it can take pieces diagonally
 		} else
 		{
+			// testing if there's any piece it can take
+			if (row < 7 && col < 7)
+			{
+				// if there's a piece on the right diagonal square
+				if (this.board[row + 1][col + 1] != null)
+				{
+					Piece anotherPiece = this.board[row + 1][col + 1];
+					if (canTakePiece(piece, anotherPiece))
+					{
+						pawnMoves.add(new Move(row + 1, col + 1));
+					}
+				}
+			}
+			if (row < 7 && col > 0)
+			{
+				// if there's a piece on the left diagonal square
+				if (this.board[row + 1][col - 1] != null)
+				{
+					Piece anotherPiece = this.board[row + 1][col - 1];
+					if (canTakePiece(piece, anotherPiece))
+					{
+						pawnMoves.add(new Move(row + 1, col - 1));
+					}
+				}
+			}
+
 			if (this.board[row + 1][col] == null)
 			{
 				// if it's on row 1 it hasn't moved and it can go 2 squares up
@@ -176,58 +228,138 @@ public class Board
 		// MOVE 1:
 		int newRow = row - 1;
 		int newCol = col - 2;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 		// MOVE 2:
 		newRow = row - 2;
 		newCol = col - 1;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 		// MOVE 3:
 		newRow = row - 2;
 		newCol = col + 1;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 		// MOVE 4:
 		newRow = row - 1;
 		newCol = col + 2;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 		// MOVE 5:
 		newRow = row + 1;
 		newCol = col - 2;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 		// MOVE 6:
 		newRow = row + 2;
 		newCol = col - 1;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 		// MOVE 7:
 		newRow = row + 2;
 		newCol = col + 1;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 		// MOVE 8:
 		newRow = row + 1;
 		newCol = col + 2;
-		if (checkIsStillOnTheBoard(newRow, newCol) && this.board[newRow][newCol] == null)
+		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			knightMoves.add(new Move(newRow, newCol));
+			if (this.board[newRow][newCol] == null)
+			{
+				knightMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					knightMoves.add(new Move(newRow, newCol));
+				}
+			}
 		}
 
 		knightMoves.trimToSize();
@@ -246,24 +378,24 @@ public class Board
 
 		// get all the possible moves from the current square and the upper right
 		// diagonal
-		//TODO change this because this.board[rowCount][colCount] == null is never null because piece is on it
-		
+		// TODO change this because this.board[rowCount][colCount] == null is never null
+		// because piece is on it
+
 		while (rowCount > 0 && colCount < 7)
 		{
-			if(this.board[--rowCount][++colCount] == null)
+			if (this.board[--rowCount][++colCount] == null)
 			{
 				bishopMoves.add(new Move(rowCount, colCount));
 			} else
 			{
-				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here
 				if (canTakePiece(piece, anotherPiece))
 				{
 					bishopMoves.add(new Move(rowCount, colCount));
 				}
 			}
 		}
-		
-		
+
 		// TODO test if this works for the upper diagonal and then apply for the rest
 		/*
 		 * // if there's a piece there, and that piece is a different color, then it can
@@ -276,65 +408,62 @@ public class Board
 		colCount = col;
 		// get all the possible moves from the current square and the upper left
 		// diagonal
-		
+
 		while (rowCount > 0 && colCount > 0)
 		{
-			if(this.board[--rowCount][--colCount] == null)
+			if (this.board[--rowCount][--colCount] == null)
 			{
 				bishopMoves.add(new Move(rowCount, colCount));
 			} else
 			{
-				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here
 				if (canTakePiece(piece, anotherPiece))
 				{
 					bishopMoves.add(new Move(rowCount, colCount));
 				}
 			}
 		}
-		
-		
+
 		rowCount = row;
 		colCount = col;
 		// get all the possible moves from the current square and the bottom left
 		// diagonal
-		
+
 		while (rowCount < 7 && colCount > 0)
 		{
-			if(this.board[++rowCount][--colCount] == null)
+			if (this.board[++rowCount][--colCount] == null)
 			{
 				bishopMoves.add(new Move(rowCount, colCount));
 			} else
 			{
-				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here
 				if (canTakePiece(piece, anotherPiece))
 				{
 					bishopMoves.add(new Move(rowCount, colCount));
 				}
 			}
 		}
-		
-		
+
 		rowCount = row;
 		colCount = col;
 		// get all the possible moves from the current square and the bottom right
 		// diagonal
-		
+
 		while (rowCount < 7 && colCount < 7)
 		{
-			if(this.board[++rowCount][++colCount] == null)
+			if (this.board[++rowCount][++colCount] == null)
 			{
 				bishopMoves.add(new Move(rowCount, colCount));
 			} else
 			{
-				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here 
+				Piece anotherPiece = this.board[rowCount][colCount]; // there's maybe a piece here
 				if (canTakePiece(piece, anotherPiece))
 				{
 					bishopMoves.add(new Move(rowCount, colCount));
 				}
 			}
 		}
-		
-		
+
 		bishopMoves.trimToSize();
 		piece.setPossibleMoves(bishopMoves.toArray(new Move[bishopMoves.size()]));
 		return bishopMoves;
@@ -342,11 +471,10 @@ public class Board
 
 	private boolean canTakePiece(Piece piece, Piece maybePiece)
 	{
-		if(maybePiece != null)
+		if (maybePiece != null)
 		{
 			return piece.isWhite() ^ maybePiece.isWhite();
-		}
-		else
+		} else
 		{
 			return false;
 		}
@@ -448,17 +576,17 @@ public class Board
 		int newCol = col - 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
-				kingMoves.add(new Move(newRow, newCol));				
-			}			
+				kingMoves.add(new Move(newRow, newCol));
+			}
 		}
 		// MOVE 2:
 		newRow = row - 1;
 		newCol = col;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
 			}
@@ -468,7 +596,7 @@ public class Board
 		newCol = col + 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
 			}
@@ -478,7 +606,7 @@ public class Board
 		newCol = col - 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
 			}
@@ -488,7 +616,7 @@ public class Board
 		newCol = col + 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
 			}
@@ -498,7 +626,7 @@ public class Board
 		newCol = col - 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
 			}
@@ -508,7 +636,7 @@ public class Board
 		newCol = col;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
 			}
@@ -518,7 +646,7 @@ public class Board
 		newCol = col + 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
 		{
-			if(this.board[newRow][newCol] == null)
+			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
 			}
@@ -528,15 +656,15 @@ public class Board
 		piece.setPossibleMoves(kingMoves.toArray(new Move[kingMoves.size()]));
 		return kingMoves;
 	}
-	
+
 	public boolean isMoveLegal(Piece piece, int row, int col, boolean isWhitesMove)
 	{
 		Move[] possibleMoves = piece.getPossibleMoves();
-		if(possibleMoves != null && piece.isWhite() == isWhitesMove)
+		if (possibleMoves != null && piece.isWhite() == isWhitesMove)
 		{
-			for(Move move: possibleMoves)
+			for (Move move : possibleMoves)
 			{
-				if(move.getRow() == row && move.getCol() == col)
+				if (move.getRow() == row && move.getCol() == col)
 				{
 					if (this.board[row][col] == null || this.board[row][col].isWhite() ^ piece.isWhite())
 					{
@@ -550,6 +678,7 @@ public class Board
 		}
 		return false;
 	}
+
 	public boolean checkIsStillOnTheBoard(int row, int col)
 	{
 		if (row < 0 || row > 7 || col < 0 || col > 7)
@@ -560,6 +689,7 @@ public class Board
 			return true;
 		}
 	}
+
 	public void emptySquare(int row, int col)
 	{
 		this.board[row][col] = null;
@@ -576,5 +706,39 @@ public class Board
 	public Piece getPieceOnSquare(int row, int col)
 	{
 		return this.board[row][col];
+	}
+
+	public Queen promotePawn(Piece pawn)
+	{
+
+		int row = pawn.getRow();
+		int col = pawn.getCol();
+		boolean isWhite = pawn.isWhite();
+		
+		Queen newQueen = new Queen(row, col, isWhite);
+		this.board[row][col] = newQueen;
+		if(isWhite)
+		{
+			for(int i = 0; i < whitePieces.length; i++)
+			{
+				if(pawn.equals(whitePieces[i]))
+				{
+					whitePieces[i] = newQueen;
+					break;
+				}
+			}
+		}
+		else
+		{
+			for(int i = 0; i < blackPieces.length; i++)
+			{
+				if(pawn.equals(blackPieces[i]))
+				{
+					blackPieces[i] = newQueen;
+					break;
+				}
+			}
+		}
+		return newQueen;
 	}
 }

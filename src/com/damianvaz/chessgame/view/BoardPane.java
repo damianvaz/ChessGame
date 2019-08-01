@@ -154,4 +154,14 @@ public class BoardPane extends GridPane
 	{
 		getChildren().remove(piece);
 	}
+	
+	public void promotePawn(Piece pawn, Queen queen)
+	{
+		int row = pawn.getRow();
+		int col = pawn.getCol();
+		boolean isWhite = pawn.isWhite();
+		
+		getChildren().remove(pawn);
+		addPieceToBoardView(queen);
+	}
 }

@@ -58,6 +58,9 @@ public class App extends Application
 				{
 					mainWindow.eatPiece(maybePiece);
 				}
+				
+				
+				
 				board.emptySquare(piece.getRow(), piece.getCol());
 				piece.setRow(newSquareRow);
 				piece.setCol(newSquareCol);
@@ -65,6 +68,20 @@ public class App extends Application
 				piece.setTranslateX(newTranslateX);
 				piece.setTranslateY(newTranslateY);
 				changePiecesToMove();
+				
+				if(piece.getName() == "Pawn")
+				{
+					if(piece.isWhite() && piece.getRow() == 0)
+					{
+						Queen newQueen = board.promotePawn(piece);
+						mainWindow.promotePawn(piece, newQueen);
+					}
+					else if(!piece.isWhite() && piece.getRow() == 7)
+					{
+						Queen newQueen = board.promotePawn(piece);
+						mainWindow.promotePawn(piece, newQueen);
+					}
+				}
 				board.getAllPossibleMoves(isWhitesMove);
 				
 			} else // if not move piece back to original square
