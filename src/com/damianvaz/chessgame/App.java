@@ -115,26 +115,47 @@ public class App extends Application
 	private void makeBlackPieces()
 	{
 		// TODO Make all the white pieces
-		Piece[] blackPieces = new Piece[6]; // 16 with all the pieces
-		blackPieces[0] = new Pawn(1, 7, false);
-		blackPieces[1] = new Rook(0, 7, false);
-		blackPieces[2] = new Knight(0, 6, false);
-		blackPieces[3] = new Bishop(0, 5, false);
-		blackPieces[4] = new King(0, 3, false);
-		blackPieces[5] = new Queen(0, 4, false);
+		Piece[] blackPieces = new Piece[16]; // 16 with all the pieces
+		blackPieces[0] = new Pawn(1, 0, false);
+		blackPieces[1] = new Pawn(1, 1, false);
+		blackPieces[2] = new Pawn(1, 2, false);
+		blackPieces[3] = new Pawn(1, 3, false);
+		blackPieces[4] = new Pawn(1, 4, false);
+		blackPieces[5] = new Pawn(1, 5, false);
+		blackPieces[6] = new Pawn(1, 6, false);
+		blackPieces[7] = new Pawn(1, 7, false);
+		blackPieces[8] = new Rook(0, 7, false);
+		blackPieces[9] = new Knight(0, 6, false);
+		blackPieces[10] = new Bishop(0, 5, false);
+		blackPieces[11] = new King(0, 3, false);
+		blackPieces[12] = new Queen(0, 4, false);
+		blackPieces[13] = new Bishop(0, 2, false);
+		blackPieces[14] = new Knight(0, 1, false);
+		blackPieces[15] = new Rook(0, 0, false);
+		
 		this.blackPieces = blackPieces;
 	}
 
 	private void makeWhitePieces()
 	{
 		// TODO Make all the black pieces
-		Piece[] whitePieces = new Piece[6]; // 16 with all the pieces
+		Piece[] whitePieces = new Piece[16]; // 16 with all the pieces
 		whitePieces[0] = new Pawn(6, 0, true);
-		whitePieces[1] = new Rook(7, 7, true);
-		whitePieces[2] = new Knight(7, 6, true);
-		whitePieces[3] = new Bishop(7, 5, true);
-		whitePieces[4] = new King(7, 4, true);
-		whitePieces[5] = new Queen(7, 3, true);
+		whitePieces[1] = new Pawn(6, 1, true);
+		whitePieces[2] = new Pawn(6, 2, true);
+		whitePieces[3] = new Pawn(6, 3, true);
+		whitePieces[4] = new Pawn(6, 4, true);
+		whitePieces[5] = new Pawn(6, 5, true);
+		whitePieces[6] = new Pawn(6, 6, true);
+		whitePieces[7] = new Pawn(6, 7, true);
+		whitePieces[8] = new Rook(7, 7, true);
+		whitePieces[9] = new Knight(7, 6, true);
+		whitePieces[10] = new Bishop(7, 5, true);
+		whitePieces[11] = new King(7, 4, true);
+		whitePieces[12] = new Queen(7, 3, true);
+		whitePieces[13] = new Bishop(7, 2, true);
+		whitePieces[14] = new Knight(7, 1, true);
+		whitePieces[15] = new Rook(7, 0, true);
 		this.whitePieces = whitePieces;
 	}
 

@@ -776,25 +776,13 @@ public class Board
 		this.board[row][col] = newQueen;
 		if(isWhite)
 		{
-			for(int i = 0; i < whitePieces.length; i++)
-			{
-				if(pawn.equals(whitePieces[i]))
-				{
-					whitePieces[i] = newQueen;
-					break;
-				}
-			}
+			// whitePieces[col] os where the pawn to be promoted is stored
+			whitePieces[col] = newQueen;
 		}
 		else
 		{
-			for(int i = 0; i < blackPieces.length; i++)
-			{
-				if(pawn.equals(blackPieces[i]))
-				{
-					blackPieces[i] = newQueen;
-					break;
-				}
-			}
+			// blackPieces[col] os where the pawn to be promoted is stored
+			blackPieces[col] = newQueen;
 		}
 		return newQueen;
 	}
