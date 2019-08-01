@@ -469,16 +469,6 @@ public class Board
 		return bishopMoves;
 	}
 
-	private boolean canTakePiece(Piece piece, Piece maybePiece)
-	{
-		if (maybePiece != null)
-		{
-			return piece.isWhite() ^ maybePiece.isWhite();
-		} else
-		{
-			return false;
-		}
-	}
 
 	private ArrayList<Move> getRookMoves(Piece piece)
 	{
@@ -579,6 +569,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 		// MOVE 2:
@@ -589,6 +586,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 		// MOVE 3:
@@ -599,6 +603,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 		// MOVE 4:
@@ -609,6 +620,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 		// MOVE 5:
@@ -619,6 +637,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 		// MOVE 6:
@@ -629,6 +654,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 		// MOVE 7:
@@ -639,6 +671,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 		// MOVE 8:
@@ -649,6 +688,13 @@ public class Board
 			if (this.board[newRow][newCol] == null)
 			{
 				kingMoves.add(new Move(newRow, newCol));
+			} else
+			{
+				Piece anotherPiece = this.board[newRow][newCol]; // there's maybe a piece here
+				if (canTakePiece(piece, anotherPiece))
+				{
+					kingMoves.add(new Move(newRow, newCol));
+				}
 			}
 		}
 
@@ -701,6 +747,17 @@ public class Board
 		int row = piece.getRow();
 		int col = piece.getCol();
 		this.board[row][col] = piece;
+	}
+	
+	private boolean canTakePiece(Piece piece, Piece maybePiece)
+	{
+		if (maybePiece != null)
+		{
+			return piece.isWhite() ^ maybePiece.isWhite();
+		} else
+		{
+			return false;
+		}
 	}
 
 	public Piece getPieceOnSquare(int row, int col)
