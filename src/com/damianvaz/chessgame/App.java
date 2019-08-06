@@ -57,10 +57,6 @@ public class App extends Application
 				if(maybePiece != null)
 				{
 					mainWindow.eatPiece(maybePiece);
-					board.printPieces();
-					System.out.println("--------------------------------------");
-				//	board.removePiece(maybePiece);
-					board.printPieces();
 				}
 				
 				

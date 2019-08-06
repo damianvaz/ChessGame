@@ -780,28 +780,10 @@ public class Board
 		Piece maybeBoardPiece = maybeBoard.getPieceOnSquare(piece.getRow(), piece.getCol());
 		
 		Piece maybePiece = maybeBoard.board[row][col];
-		if(maybePiece != null)
-		{
-			if(maybePiece.isWhite())
-			{
-				// TODO delete sysos
-				System.out.println("PIECE TO BE TAKEN IS WHITE");
-			} else
-			{
-				System.out.println("PIECE TO BE TAKEN IS BLACK");
-			}
-		}
-		if(maybeBoardPiece.isWhite())
-		{
-			System.out.println("PIECE TO TAKE IS WHITE");
-		} else
-		{
-			System.out.println("PIECE TO TAKE IS BLACK");
-		}
+		
 		if(maybeBoard.board[row][col] != null && canTakePiece(maybeBoardPiece, maybePiece))
 		{
 			maybeBoard.removePiece(maybePiece);
-			System.out.println("ALO LAO Marciano98");
 		}
 		
 		
@@ -812,9 +794,20 @@ public class Board
 		maybeBoard.fillSquare(maybeBoardPiece);
 		maybeBoard.getAllPossibleMoves(!isWhitesMove);
 		
+		if(piece.getName() == "Pawn")
+		{
+			if(piece.isWhite() && piece.getRow() == 0)
+			{
+				Queen newQueen = maybeBoard.promotePawn(piece);
+			}
+			else if(!piece.isWhite() && piece.getRow() == 7)
+			{
+				Queen newQueen = maybeBoard.promotePawn(piece);
+			}
+		}
+		
 		if(maybeBoard.isKingChecked(isWhitesMove))
 		{
-			System.out.println("Because king would still be checked");
 			return false;
 		}
 		maybeBoardPiece.setRow(originalRow);
@@ -951,20 +944,45 @@ public class Board
 		int row = pawn.getRow();
 		int col = pawn.getCol();
 		boolean isWhite = pawn.isWhite();
+		int index = getPieceIndex(pawn);
 		
 		Queen newQueen = new Queen(row, col, isWhite);
 		this.board[row][col] = newQueen;
 		if(isWhite)
 		{
 			// whitePieces[col] os where the pawn to be promoted is stored
-			whitePieces[col] = newQueen;
+			whitePieces[index] = newQueen;
 		}
 		else
 		{
-			// blackPieces[col] os where the pawn to be promoted is stored
-			blackPieces[col] = newQueen;
+			blackPieces[index] = newQueen;
 		}
 		return newQueen;
+	}
+	
+	public int getPieceIndex(Piece piece)
+	{
+		if (piece.isWhite())
+		{
+			for (int i = 0; i < whitePieces.length; i++)
+			{
+				if (whitePieces[i].equals(piece))
+				{
+					return i;
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < blackPieces.length; i++)
+			{
+				if (blackPieces[i].equals(piece))
+				{
+					return i;
+				}
+			}
+		}
+		return 0;
 	}
 
 	public boolean isKingChecked(boolean iswhite)
@@ -1052,27 +1070,5 @@ public class Board
 			blackPieces = newBlackPieces;
 			blackKing = newKing;
 		}
-	}
-	public void printPieces()
-	{
-		System.out.println("White Pieces: ");
-		for(int i = 0; i < whitePieces.length; i++)
-		{
-			System.out.println(whitePieces[i].getName() + ", id: " + i);
-			if(whitePieces[i] instanceof King)
-			{
-				System.out.println("This is the King");
-			}
-		}
-		System.out.println("Black Pieces: ");
-		for(int i = 0; i < blackPieces.length; i++)
-		{
-			System.out.println(blackPieces[i].getName() + ", id: " + i);
-			if(blackPieces[i] instanceof King)
-			{
-				System.out.println("This is the King");
-			}
-		}
-
 	}
 }
