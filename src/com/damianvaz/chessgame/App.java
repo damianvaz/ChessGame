@@ -30,7 +30,7 @@ public class App extends Application
 		mainWindow = new MainWindow("Chess");
 		primaryStage = mainWindow;
 		isWhitesMove = true;
-		//TODO check if it's really necessary to have white's and black's pieces as instanve variables 
+		//TODO check if it's really necessary to have white's and black's pieces as instance variables 
 		//Piece[] whitePieces = makeWhitePieces();
 		//Piece[] blackPieces = makeBlackPieces();
 		makeAllPieces();
@@ -57,6 +57,10 @@ public class App extends Application
 				if(maybePiece != null)
 				{
 					mainWindow.eatPiece(maybePiece);
+					board.printPieces();
+					System.out.println("--------------------------------------");
+				//	board.removePiece(maybePiece);
+					board.printPieces();
 				}
 				
 				
@@ -67,7 +71,6 @@ public class App extends Application
 				board.fillSquare(piece);
 				piece.setTranslateX(newTranslateX);
 				piece.setTranslateY(newTranslateY);
-				changePiecesToMove();
 				
 				if(piece.getName() == "Pawn")
 				{
@@ -82,6 +85,8 @@ public class App extends Application
 						mainWindow.promotePawn(piece, newQueen);
 					}
 				}
+				board.getAllPossibleMoves(isWhitesMove); // To check if king is  checked 
+				changePiecesToMove();
 				board.getAllPossibleMoves(isWhitesMove);
 				
 			} else // if not move piece back to original square
@@ -127,8 +132,8 @@ public class App extends Application
 		blackPieces[8] = new Rook(0, 7, false);
 		blackPieces[9] = new Knight(0, 6, false);
 		blackPieces[10] = new Bishop(0, 5, false);
-		blackPieces[11] = new King(0, 3, false);
-		blackPieces[12] = new Queen(0, 4, false);
+		blackPieces[11] = new Queen(0, 4, false);
+		blackPieces[12] = new King(0, 3, false);
 		blackPieces[13] = new Bishop(0, 2, false);
 		blackPieces[14] = new Knight(0, 1, false);
 		blackPieces[15] = new Rook(0, 0, false);

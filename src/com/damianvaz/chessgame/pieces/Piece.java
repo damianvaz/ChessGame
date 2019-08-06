@@ -60,5 +60,4 @@ public abstract class Piece extends Label
 		this.possibleMoves = possibleMoves;
 	}
 	
-	
 }
