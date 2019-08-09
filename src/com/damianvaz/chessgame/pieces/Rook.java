@@ -9,12 +9,15 @@ import javafx.scene.image.ImageView;
 
 public class Rook extends Piece
 {
+	private boolean hasMoved;
+	
 	public Rook(int row, int col, boolean isWhite)
 	{
 		this.name = "Rook";
 		this.row = row;
 		this.col = col;
 		this.isWhite = isWhite;
+		this.hasMoved = false;
 		String img = isWhite ? "/images/rookW.png" : "/images/rookB.png";
 		Image image = new Image(getClass().getResourceAsStream(img));
 		setGraphic(new ImageView(image));
@@ -81,6 +84,14 @@ public class Rook extends Piece
 			System.out.println("Not possible move");
 		}
 		return false;
+	}
+	public boolean hasMoved()
+	{
+		return hasMoved;
+	}
+	public void setHasMoved(boolean hasMoved)
+	{
+		this.hasMoved = hasMoved;
 	}
 
 }

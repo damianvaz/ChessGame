@@ -47,9 +47,6 @@ public class App extends Application
 			double newTranslateX = e.getNewTranslateX();
 			double newTranslateY = e.getNewTranslateY();
 
-			// if is a square that the piece can go, (not considering blocking pieces or if
-			// it's a legal move) move the piece there both in view and in piece values
-			// if (piece.canPieceMoveHere(newSquareRow, newSquareCol))
 			if (board.isMoveLegal(piece, newSquareRow, newSquareCol, isWhitesMove))
 			{
 				// check if there's a piece here, and if there is, take it
@@ -59,8 +56,6 @@ public class App extends Application
 					mainWindow.eatPiece(maybePiece);
 				}
 				
-				
-				
 				board.emptySquare(piece.getRow(), piece.getCol());
 				piece.setRow(newSquareRow);
 				piece.setCol(newSquareCol);
@@ -68,6 +63,7 @@ public class App extends Application
 				piece.setTranslateX(newTranslateX);
 				piece.setTranslateY(newTranslateY);
 				
+				// if is promoting a pawn
 				if(piece.getName() == "Pawn")
 				{
 					if(piece.isWhite() && piece.getRow() == 0)
@@ -81,9 +77,53 @@ public class App extends Application
 						mainWindow.promotePawn(piece, newQueen);
 					}
 				}
+				
+				if(piece.getName() == "King")
+				{
+					King king = (King) piece;
+					if(!king.HasMoved())
+					{
+						king.setHasMoved(true);
+						if(king.isWhite())
+						{
+							if(newSquareCol == 6)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(7, 7);
+								mainWindow.kingSideCastle(rook);
+							}
+							if(newSquareCol == 2)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(7, 0);
+								mainWindow.queenSideCastle(rook);
+							}
+						} else
+						{
+							if(newSquareCol == 6)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(0, 7);
+								mainWindow.kingSideCastle(rook);
+							}
+							if(newSquareCol == 2)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(0, 0);
+								mainWindow.queenSideCastle(rook);
+							}
+						}
+					}
+				}
+				
+				if(piece.getName() == "Rook")
+				{
+					Rook rook = (Rook) piece;
+					if(!rook.hasMoved())
+					{
+						rook.setHasMoved(true);
+					}
+				}
+				
 				board.getAllPossibleMoves(isWhitesMove); // To check if king is  checked 
 				changePiecesToMove();
-				board.getAllPossibleMoves(isWhitesMove);
+				board.getAllPossibleMoves(isWhitesMove); // to get all the possible moves of the next movement
 				
 			} else // if not move piece back to original square
 			{
@@ -128,8 +168,8 @@ public class App extends Application
 		blackPieces[8] = new Rook(0, 7, false);
 		blackPieces[9] = new Knight(0, 6, false);
 		blackPieces[10] = new Bishop(0, 5, false);
-		blackPieces[11] = new Queen(0, 4, false);
-		blackPieces[12] = new King(0, 3, false);
+		blackPieces[12] = new King(0, 4, false);
+		blackPieces[11] = new Queen(0, 3, false);
 		blackPieces[13] = new Bishop(0, 2, false);
 		blackPieces[14] = new Knight(0, 1, false);
 		blackPieces[15] = new Rook(0, 0, false);

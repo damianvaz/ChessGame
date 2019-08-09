@@ -153,4 +153,15 @@ public class King extends Piece
 		this.isCheck = isCheck;
 	}
 
+	public boolean HasMoved()
+	{
+		return hasMoved;
+	}
+
+	public void setHasMoved(boolean hasMoved)
+	{
+		this.hasMoved = hasMoved;
+	}
+	
+	
 }

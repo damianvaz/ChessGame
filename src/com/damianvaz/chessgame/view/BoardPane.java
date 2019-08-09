@@ -110,9 +110,6 @@ public class BoardPane extends GridPane
 			int originalSquareRow = (int) Math.ceil(orgSceneY / squareSide) - 1;
 			int originalSquareCol = (int) Math.ceil(orgSceneX / squareSide) - 1;
 
-			System.out.println("New Pos: (" + newSquareRow + ", " + newSquareCol + ") " + "Old Pos: ("
-					+ originalSquareRow + ", " + originalSquareCol + ")");
-			// TODO remove the syso
 			double offsetY = newSquareRow * squareSide - originalSquareRow * squareSide;
 			double offsetX = newSquareCol * squareSide - originalSquareCol * squareSide;
 			double newTranslateX = originalTranslateX + offsetX;
@@ -141,7 +138,6 @@ public class BoardPane extends GridPane
 			source.setTranslateX(newTranslateX);
 			source.setTranslateY(newTranslateY);
 
-			// System.out.println("X: " + newTranslateX + " Y: " + newTranslateY);
 		}
 	};
 
@@ -163,5 +159,19 @@ public class BoardPane extends GridPane
 		
 		getChildren().remove(pawn);
 		addPieceToBoardView(queen);
+	}
+
+	public void kingSideCastle(Rook rook)
+	{
+		eatPiece(rook);
+		rook.setCol(5);
+		addPieceToBoardView(rook);
+	}
+
+	public void queenSideCastle(Rook rook)
+	{
+		eatPiece(rook);
+		rook.setCol(3);
+		addPieceToBoardView(rook);
 	}
 }

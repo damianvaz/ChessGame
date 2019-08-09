@@ -629,8 +629,8 @@ public class Board
 		int row = piece.getRow();
 		int col = piece.getCol();
 
-		// The king like the knight has up to 8 moves it can go
-		// MOVE 1:
+		// The king like the knight has up to 8 moves it can go and the castles if it can 
+		// MOVE 1: 
 		int newRow = row - 1;
 		int newCol = col - 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
@@ -766,10 +766,147 @@ public class Board
 				}
 			}
 		}
+		
+		// Adding castles moves if possible
+		King king = (King) piece;
+		if(!king.HasMoved())
+		{
+			if(king.isWhite())
+			{
+				// Adding king side castle
+				if(this.board[7][7] != null)
+				{
+					Piece maybeRook = this.board[7][7];
+					if (maybeRook.getName() == "Rook" && maybeRook.isWhite())
+					{
+						Rook rook = (Rook) this.board[7][7];
+						if(checkKingSideCastle(king, rook))
+						{
+							kingMoves.add(new Move(7, 6));
+						}
+					}
+				}
+				
+				// Adding queen side castle
+				if(this.board[7][0] != null)
+				{
+					Piece maybeRook = this.board[7][0];
+					if (maybeRook.getName() == "Rook" && maybeRook.isWhite())
+					{
+						Rook rook = (Rook) this.board[7][0];
+						if(checkQueenSideCastle(king, rook))
+						{
+							kingMoves.add(new Move(7, 2));
+						}
+					}
+				}
+				
+			} else
+			{
+				if(this.board[0][7] != null)
+				{
+					// Adding king side castle
+					Piece maybeRook = this.board[0][7];
+					if (maybeRook.getName() == "Rook" && !maybeRook.isWhite())
+					{
+						Rook rook = (Rook) this.board[0][7];
+						if(checkKingSideCastle(king, rook))
+						{
+							kingMoves.add(new Move(0, 6));
+						} 
+					}
+				}
+				
+				// Adding queen side castle
+				if(this.board[0][0] != null)
+				{
+					Piece maybeRook = this.board[0][0];
+					if (maybeRook.getName() == "Rook" && !maybeRook.isWhite())
+					{
+						Rook rook = (Rook) this.board[0][0];
+						if(checkQueenSideCastle(king, rook))
+						{
+							kingMoves.add(new Move(0, 2));
+						}
+					}
+				}
+			}
+		
+		}
 
 		kingMoves.trimToSize();
 		piece.setPossibleMoves(kingMoves.toArray(new Move[kingMoves.size()]));
 		return kingMoves;
+	}
+
+	
+
+	private boolean checkQueenSideCastle(King king, Rook rook)
+	{
+		if(rook.hasMoved())
+		{
+			return false;
+		}
+		if(king.isWhite())
+		{
+			if(this.board[7][3] != null || this.board[7][2] != null)
+			{
+				return false;
+			}
+			if(!isMoveLegal(king, 7, 3, king.isWhite()))
+			{
+				return false;
+			}
+			
+			return true;
+		} else
+		{
+			if(this.board[0][3] != null || this.board[0][2] != null)
+			{
+				return false;
+			}
+			
+			if(!isMoveLegal(king, 0, 3, king.isWhite()))
+			{
+				return false;
+			}
+
+			return true;
+		}
+	}
+
+	private boolean checkKingSideCastle(King king, Rook rook)
+	{
+		if(rook.hasMoved())
+		{
+			return false;
+		}
+		if(king.isWhite())
+		{
+			if(this.board[7][5] != null || this.board[7][6] != null)
+			{
+				return false;
+			}
+			if(!isMoveLegal(king, 7, 5, king.isWhite()))
+			{
+				return false;
+			}
+			
+			return true;
+		} else
+		{
+			if(this.board[0][5] != null || this.board[0][6] != null)
+			{
+				return false;
+			}
+			
+			if(!isMoveLegal(king, 0, 5, king.isWhite()))
+			{
+				return false;
+			}
+
+			return true;
+		}
 	}
 
 	public boolean isMoveLegal(Piece piece, int row, int col, boolean isWhitesMove)
@@ -873,10 +1010,6 @@ public class Board
 		
 		switch(name)
 		{
-			case "Pawn":
-			{
-				return new Pawn(row, col, isWhite);
-			}
 			case "Rook":
 			{
 				return new Rook(row, col, isWhite);
@@ -893,8 +1026,17 @@ public class Board
 			{
 				return new Queen(row, col, isWhite);
 			}
+			case "King":
+			{
+				King king = new King(row, col, isWhite);
+				King originalKing = (King) piece;
+				king.setHasMoved(originalKing.HasMoved());
+				return king;
+			}
 			default:
-				return new King(row, col, isWhite);
+			{
+				return new Pawn(row, col, isWhite);
+			}
 		}
 	}
 
@@ -1028,7 +1170,6 @@ public class Board
 					if (newWhitePieces[i].getName() == "King")
 					{
 						newKing = (King) newWhitePieces[i];
-						System.out.println("New White King");
 					}
 				}
 				else
@@ -1058,7 +1199,6 @@ public class Board
 					if (newBlackPieces[i].getName() == "King")
 					{
 						newKing = (King) newBlackPieces[i];
-						System.out.println("New King");
 					}
 					
 				}

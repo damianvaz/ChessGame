@@ -2,6 +2,7 @@ package com.damianvaz.chessgame.view;
 
 import com.damianvaz.chessgame.pieces.Piece;
 import com.damianvaz.chessgame.pieces.Queen;
+import com.damianvaz.chessgame.pieces.Rook;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -43,5 +44,16 @@ public class MainWindow extends Stage
 	public void promotePawn(Piece pawn, Queen newQueen)
 	{
 		boardPane.promotePawn(pawn, newQueen);
+	}
+
+	public void kingSideCastle(Rook rook)
+	{
+		boardPane.kingSideCastle(rook);
+	}
+
+	public void queenSideCastle(Rook rook)
+	{
+		boardPane.queenSideCastle(rook);
+		
 	}
 }
