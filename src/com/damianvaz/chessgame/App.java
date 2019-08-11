@@ -30,9 +30,10 @@ public class App extends Application
 		mainWindow = new MainWindow("Chess");
 		primaryStage = mainWindow;
 		isWhitesMove = true;
-		//TODO check if it's really necessary to have white's and black's pieces as instance variables 
-		//Piece[] whitePieces = makeWhitePieces();
-		//Piece[] blackPieces = makeBlackPieces();
+		// TODO check if it's really necessary to have white's and black's pieces as
+		// instance variables
+		// Piece[] whitePieces = makeWhitePieces();
+		// Piece[] blackPieces = makeBlackPieces();
 		makeAllPieces();
 		board = new Board(whitePieces, blackPieces);
 		board.getAllPossibleMoves(isWhitesMove); // populate pieces move array
@@ -51,101 +52,135 @@ public class App extends Application
 			{
 				// check if there's a piece here, and if there is, take it
 				Piece maybePiece = board.getPieceOnSquare(newSquareRow, newSquareCol);
-				if(maybePiece != null)
+				if (maybePiece != null)
 				{
 					mainWindow.eatPiece(maybePiece);
 				}
-				
+				int originalCol = piece.getCol();
+				boolean squareEmpty = (board.getPieceOnSquare(newSquareRow, newSquareCol) == null) ? true : false;
+
 				board.emptySquare(piece.getRow(), piece.getCol());
 				piece.setRow(newSquareRow);
 				piece.setCol(newSquareCol);
 				board.fillSquare(piece);
 				piece.setTranslateX(newTranslateX);
 				piece.setTranslateY(newTranslateY);
-				
+				board.setLastMove(new Move(newSquareRow, newSquareCol));
+
 				// if is promoting a pawn
-				if(piece.getName() == "Pawn")
+				if (piece.getName() == "Pawn")
 				{
-					if(piece.isWhite() && piece.getRow() == 0)
+					if (piece.isWhite() && piece.getRow() == 0)
+					{
+						Queen newQueen = board.promotePawn(piece);
+						mainWindow.promotePawn(piece, newQueen);
+					} else if (!piece.isWhite() && piece.getRow() == 7)
 					{
 						Queen newQueen = board.promotePawn(piece);
 						mainWindow.promotePawn(piece, newQueen);
 					}
-					else if(!piece.isWhite() && piece.getRow() == 7)
+					// En passant
+					if (piece.isWhite())
 					{
-						Queen newQueen = board.promotePawn(piece);
-						mainWindow.promotePawn(piece, newQueen);
-					}
-				}
-				
-				if(piece.getName() == "King")
-				{
-					King king = (King) piece;
-					if(!king.HasMoved())
+						
+						if ((newSquareCol == originalCol - 1 || newSquareCol == originalCol + 1) && squareEmpty)
+						{
+							Piece enPassantPawn = board.getPieceOnSquare(newSquareRow + 1, newSquareCol);
+							if (enPassantPawn != null)
+							{
+								mainWindow.eatPiece(enPassantPawn);
+							}
+						}
+					} else
 					{
-						king.setHasMoved(true);
-						if(king.isWhite())
+						if ((newSquareCol == originalCol - 1 || newSquareCol == originalCol + 1)
+								&& squareEmpty)
 						{
-							if(newSquareCol == 6)
+							Piece enPassantPawn = board.getPieceOnSquare(newSquareRow - 1, newSquareCol);
+							if (enPassantPawn != null)
 							{
-								Rook rook = (Rook) board.getPieceOnSquare(7, 7);
-								mainWindow.kingSideCastle(rook);
-							}
-							if(newSquareCol == 2)
-							{
-								Rook rook = (Rook) board.getPieceOnSquare(7, 0);
-								mainWindow.queenSideCastle(rook);
-							}
-						} else
-						{
-							if(newSquareCol == 6)
-							{
-								Rook rook = (Rook) board.getPieceOnSquare(0, 7);
-								mainWindow.kingSideCastle(rook);
-							}
-							if(newSquareCol == 2)
-							{
-								Rook rook = (Rook) board.getPieceOnSquare(0, 0);
-								mainWindow.queenSideCastle(rook);
+								mainWindow.eatPiece(enPassantPawn);
 							}
 						}
 					}
 				}
-				
-				if(piece.getName() == "Rook")
+
+				if (piece.getName() == "King")
+				{
+					King king = (King) piece;
+					if (!king.HasMoved())
+					{
+						king.setHasMoved(true);
+						if (king.isWhite())
+						{
+							if (newSquareCol == 6)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(7, 7);
+								board.emptySquare(rook.getRow(), rook.getCol());
+								mainWindow.kingSideCastle(rook);
+								board.fillSquare(rook);
+								System.out.println("" + king.getCol());
+							}
+							if (newSquareCol == 2)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(7, 0);
+								board.emptySquare(rook.getRow(), rook.getCol());
+								mainWindow.queenSideCastle(rook);
+								board.fillSquare(rook);
+							}
+						} else
+						{
+							if (newSquareCol == 6)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(0, 7);
+								board.emptySquare(rook.getRow(), rook.getCol());
+								mainWindow.kingSideCastle(rook);
+								board.fillSquare(rook);
+							}
+							if (newSquareCol == 2)
+							{
+								Rook rook = (Rook) board.getPieceOnSquare(0, 0);
+								board.emptySquare(rook.getRow(), rook.getCol());
+								mainWindow.queenSideCastle(rook);
+								board.fillSquare(rook);
+							}
+						}
+					}
+				}
+
+				if (piece.getName() == "Rook")
 				{
 					Rook rook = (Rook) piece;
-					if(!rook.hasMoved())
+					if (!rook.hasMoved())
 					{
 						rook.setHasMoved(true);
 					}
 				}
-				
-				board.getAllPossibleMoves(isWhitesMove); // To check if king is  checked 
+
+				board.getAllPossibleMoves(isWhitesMove); // To check if king is checked
 				changePiecesToMove();
 				board.getAllPossibleMoves(isWhitesMove); // to get all the possible moves of the next movement
-				
+
 			} else // if not move piece back to original square
 			{
 				piece.setTranslateX(originalTranslateX);
 				piece.setTranslateY(originalTranslateY);
-				
+
 			}
-			
+
 		});
 	}
-	
+
 	private void changePiecesToMove()
 	{
-		if(isWhitesMove)
+		if (isWhitesMove)
 		{
 			isWhitesMove = false;
-		}
-		else
+		} else
 		{
 			isWhitesMove = true;
 		}
-		
+
 	}
 
 	private void makeAllPieces()
@@ -153,6 +188,7 @@ public class App extends Application
 		makeBlackPieces();
 		makeWhitePieces();
 	}
+
 	private void makeBlackPieces()
 	{
 		// TODO Make all the white pieces
@@ -173,7 +209,7 @@ public class App extends Application
 		blackPieces[13] = new Bishop(0, 2, false);
 		blackPieces[14] = new Knight(0, 1, false);
 		blackPieces[15] = new Rook(0, 0, false);
-		
+
 		this.blackPieces = blackPieces;
 	}
 

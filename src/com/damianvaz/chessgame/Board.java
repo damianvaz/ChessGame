@@ -16,6 +16,17 @@ public class Board
 	private Piece[] whitePieces;
 	private Piece[] blackPieces;
 	private King whiteKing, blackKing;
+	private Move lastMove;
+
+	public Move getLastMove()
+	{
+		return lastMove;
+	}
+
+	public void setLastMove(Move lastMove)
+	{
+		this.lastMove = lastMove;
+	}
 
 	private Piece[][] board = new Piece[8][8];
 
@@ -33,29 +44,29 @@ public class Board
 		{
 			board[piece.getRow()][piece.getCol()] = piece;
 		}
-		
+
 		whiteKing = getWhiteKing();
-		blackKing = getBlackKing();		
-		
+		blackKing = getBlackKing();
+
 	}
 
 	private King getBlackKing()
 	{
 		for (int i = 0; i < blackPieces.length; i++)
 		{
-			if(blackPieces[i].getName() == "King")
+			if (blackPieces[i].getName() == "King")
 			{
 				return (King) blackPieces[i];
 			}
 		}
 		return null;
 	}
-	
+
 	private King getWhiteKing()
 	{
 		for (int i = 0; i < whitePieces.length; i++)
 		{
-			if(whitePieces[i].getName() == "King")
+			if (whitePieces[i].getName() == "King")
 			{
 				return (King) whitePieces[i];
 			}
@@ -91,7 +102,7 @@ public class Board
 	public Move[] getAllPossibleMoves(boolean isWhitesMove)
 	{
 		ArrayList<Move> legalMoves = new ArrayList<Move>();
-		
+
 		Piece[] piecesToMove = isWhitesMove ? whitePieces : blackPieces;
 		for (int i = 0; i < piecesToMove.length; i++)
 		{
@@ -121,40 +132,40 @@ public class Board
 		String pieceName = piece.getName();
 		switch (pieceName)
 		{
-			case "Pawn":
-			{
-				legalMoves.addAll(getPawnMoves(piece));
-				break;
-			}
-			case "Knight":
-			{
-				legalMoves.addAll(getKnightMoves(piece));
-				break;
-			}
-			case "Bishop":
-			{
-				legalMoves.addAll(getBishopMoves(piece));
-				break;
-			}
-			case "Rook":
-			{
-				legalMoves.addAll(getRookMoves(piece));
-				break;
-			}
-			case "Queen":
-			{
-				legalMoves.addAll(getQueenMoves(piece));
-				break;
-			}
-			case "King":
-			{
-				legalMoves.addAll(getKingMoves(piece));
-				break;
-			}
-			default:
-			{
-				break;
-			}
+		case "Pawn":
+		{
+			legalMoves.addAll(getPawnMoves(piece));
+			break;
+		}
+		case "Knight":
+		{
+			legalMoves.addAll(getKnightMoves(piece));
+			break;
+		}
+		case "Bishop":
+		{
+			legalMoves.addAll(getBishopMoves(piece));
+			break;
+		}
+		case "Rook":
+		{
+			legalMoves.addAll(getRookMoves(piece));
+			break;
+		}
+		case "Queen":
+		{
+			legalMoves.addAll(getQueenMoves(piece));
+			break;
+		}
+		case "King":
+		{
+			legalMoves.addAll(getKingMoves(piece));
+			break;
+		}
+		default:
+		{
+			break;
+		}
 		}
 
 		legalMoves.trimToSize();
@@ -195,6 +206,21 @@ public class Board
 				}
 			}
 
+			// check en passant
+			if (row == 3)
+			{
+				if (lastMove != null)
+				{
+					if (lastMove.getRow() == row && lastMove.getCol() == col - 1 && this.board[row][col - 1].getName() == "Pawn")
+					{
+						pawnMoves.add(new Move(row - 1, col - 1));
+					}
+					if (lastMove.getRow() == row && lastMove.getCol() == col + 1 && this.board[row][col + 1].getName() == "Pawn")
+					{
+						pawnMoves.add(new Move(row - 1, col + 1));
+					}
+				}
+			}
 			// if there's no piece above it
 			if (this.board[row - 1][col] == null)
 			{
@@ -234,6 +260,22 @@ public class Board
 				}
 			}
 
+			// check en passant
+			if (row == 4)
+			{
+				if (lastMove != null)
+				{
+					if (lastMove.getRow() == row && lastMove.getCol() == col - 1 && this.board[row][col - 1].getName() == "Pawn")
+					{
+						pawnMoves.add(new Move(row + 1, col - 1));
+					}
+					if (lastMove.getRow() == row && lastMove.getCol() == col + 1 && this.board[row][col + 1].getName() == "Pawn")
+					{
+						pawnMoves.add(new Move(row + 1, col + 1));
+					}
+				}
+			}
+
 			if (this.board[row + 1][col] == null)
 			{
 				// if it's on row 1 it hasn't moved and it can go 2 squares up
@@ -256,8 +298,8 @@ public class Board
 		{
 			if (isWhite)
 			{
-				//int row = blackKing.getRow
-				if(blackKing.getRow() == move.getRow() && blackKing.getCol() == move.getCol())
+				// int row = blackKing.getRow
+				if (blackKing.getRow() == move.getRow() && blackKing.getCol() == move.getCol())
 				{
 					blackKing.setCheck(true);
 					System.out.println("Black king is checked");
@@ -269,7 +311,7 @@ public class Board
 				}
 			} else
 			{
-				if(whiteKing.getRow() == move.getRow() && whiteKing.getCol() == move.getCol())
+				if (whiteKing.getRow() == move.getRow() && whiteKing.getCol() == move.getCol())
 				{
 					whiteKing.setCheck(true);
 					System.out.println("White King is checked");
@@ -444,7 +486,6 @@ public class Board
 
 		// get all the possible moves from the current square and the upper right
 		// diagonal
-		
 
 		while (rowCount > 0 && colCount < 7)
 		{
@@ -538,7 +579,6 @@ public class Board
 		return bishopMoves;
 	}
 
-
 	private ArrayList<Move> getRookMoves(Piece piece)
 	{
 		ArrayList<Move> rookMoves = new ArrayList<Move>();
@@ -629,8 +669,9 @@ public class Board
 		int row = piece.getRow();
 		int col = piece.getCol();
 
-		// The king like the knight has up to 8 moves it can go and the castles if it can 
-		// MOVE 1: 
+		// The king like the knight has up to 8 moves it can go and the castles if it
+		// can
+		// MOVE 1:
 		int newRow = row - 1;
 		int newCol = col - 1;
 		if (checkIsStillOnTheBoard(newRow, newCol))
@@ -766,72 +807,72 @@ public class Board
 				}
 			}
 		}
-		
+
 		// Adding castles moves if possible
 		King king = (King) piece;
-		if(!king.HasMoved())
+		if (!king.HasMoved())
 		{
-			if(king.isWhite())
+			if (king.isWhite())
 			{
 				// Adding king side castle
-				if(this.board[7][7] != null)
+				if (this.board[7][7] != null)
 				{
 					Piece maybeRook = this.board[7][7];
 					if (maybeRook.getName() == "Rook" && maybeRook.isWhite())
 					{
 						Rook rook = (Rook) this.board[7][7];
-						if(checkKingSideCastle(king, rook))
+						if (checkKingSideCastle(king, rook))
 						{
 							kingMoves.add(new Move(7, 6));
 						}
 					}
 				}
-				
+
 				// Adding queen side castle
-				if(this.board[7][0] != null)
+				if (this.board[7][0] != null)
 				{
 					Piece maybeRook = this.board[7][0];
 					if (maybeRook.getName() == "Rook" && maybeRook.isWhite())
 					{
 						Rook rook = (Rook) this.board[7][0];
-						if(checkQueenSideCastle(king, rook))
+						if (checkQueenSideCastle(king, rook))
 						{
 							kingMoves.add(new Move(7, 2));
 						}
 					}
 				}
-				
+
 			} else
 			{
-				if(this.board[0][7] != null)
+				if (this.board[0][7] != null)
 				{
 					// Adding king side castle
 					Piece maybeRook = this.board[0][7];
 					if (maybeRook.getName() == "Rook" && !maybeRook.isWhite())
 					{
 						Rook rook = (Rook) this.board[0][7];
-						if(checkKingSideCastle(king, rook))
+						if (checkKingSideCastle(king, rook))
 						{
 							kingMoves.add(new Move(0, 6));
-						} 
+						}
 					}
 				}
-				
+
 				// Adding queen side castle
-				if(this.board[0][0] != null)
+				if (this.board[0][0] != null)
 				{
 					Piece maybeRook = this.board[0][0];
 					if (maybeRook.getName() == "Rook" && !maybeRook.isWhite())
 					{
 						Rook rook = (Rook) this.board[0][0];
-						if(checkQueenSideCastle(king, rook))
+						if (checkQueenSideCastle(king, rook))
 						{
 							kingMoves.add(new Move(0, 2));
 						}
 					}
 				}
 			}
-		
+
 		}
 
 		kingMoves.trimToSize();
@@ -839,34 +880,32 @@ public class Board
 		return kingMoves;
 	}
 
-	
-
 	private boolean checkQueenSideCastle(King king, Rook rook)
 	{
-		if(rook.hasMoved())
+		if (rook.hasMoved())
 		{
 			return false;
 		}
-		if(king.isWhite())
+		if (king.isWhite())
 		{
-			if(this.board[7][3] != null || this.board[7][2] != null)
+			if (this.board[7][3] != null || this.board[7][2] != null)
 			{
 				return false;
 			}
-			if(!isMoveLegal(king, 7, 3, king.isWhite()))
+			if (!isMoveLegal(king, 7, 3, king.isWhite()))
 			{
 				return false;
 			}
-			
+
 			return true;
 		} else
 		{
-			if(this.board[0][3] != null || this.board[0][2] != null)
+			if (this.board[0][3] != null || this.board[0][2] != null)
 			{
 				return false;
 			}
-			
-			if(!isMoveLegal(king, 0, 3, king.isWhite()))
+
+			if (!isMoveLegal(king, 0, 3, king.isWhite()))
 			{
 				return false;
 			}
@@ -877,30 +916,30 @@ public class Board
 
 	private boolean checkKingSideCastle(King king, Rook rook)
 	{
-		if(rook.hasMoved())
+		if (rook.hasMoved())
 		{
 			return false;
 		}
-		if(king.isWhite())
+		if (king.isWhite())
 		{
-			if(this.board[7][5] != null || this.board[7][6] != null)
+			if (this.board[7][5] != null || this.board[7][6] != null)
 			{
 				return false;
 			}
-			if(!isMoveLegal(king, 7, 5, king.isWhite()))
+			if (!isMoveLegal(king, 7, 5, king.isWhite()))
 			{
 				return false;
 			}
-			
+
 			return true;
 		} else
 		{
-			if(this.board[0][5] != null || this.board[0][6] != null)
+			if (this.board[0][5] != null || this.board[0][6] != null)
 			{
 				return false;
 			}
-			
-			if(!isMoveLegal(king, 0, 5, king.isWhite()))
+
+			if (!isMoveLegal(king, 0, 5, king.isWhite()))
 			{
 				return false;
 			}
@@ -915,47 +954,44 @@ public class Board
 		int originalCol = piece.getCol();
 		Board maybeBoard = copyBoard(this);
 		Piece maybeBoardPiece = maybeBoard.getPieceOnSquare(piece.getRow(), piece.getCol());
-		
+
 		Piece maybePiece = maybeBoard.board[row][col];
-		
-		if(maybeBoard.board[row][col] != null && canTakePiece(maybeBoardPiece, maybePiece))
+
+		if (maybeBoard.board[row][col] != null && canTakePiece(maybeBoardPiece, maybePiece))
 		{
 			maybeBoard.removePiece(maybePiece);
 		}
-		
-		
+
 		maybeBoard.emptySquare(maybeBoardPiece.getRow(), maybeBoardPiece.getCol());
-		
+
 		maybeBoardPiece.setRow(row);
 		maybeBoardPiece.setCol(col);
 		maybeBoard.fillSquare(maybeBoardPiece);
 		maybeBoard.getAllPossibleMoves(!isWhitesMove);
-		
-		if(piece.getName() == "Pawn")
+
+		if (piece.getName() == "Pawn")
 		{
-			if(piece.isWhite() && piece.getRow() == 0)
+			if (piece.isWhite() && piece.getRow() == 0)
 			{
 				Queen newQueen = maybeBoard.promotePawn(piece);
-			}
-			else if(!piece.isWhite() && piece.getRow() == 7)
+			} else if (!piece.isWhite() && piece.getRow() == 7)
 			{
 				Queen newQueen = maybeBoard.promotePawn(piece);
 			}
 		}
-		
-		if(maybeBoard.isKingChecked(isWhitesMove))
+
+		if (maybeBoard.isKingChecked(isWhitesMove))
 		{
 			return false;
 		}
 		maybeBoardPiece.setRow(originalRow);
 		maybeBoardPiece.setCol(originalCol);
-		
-		//iece.setTranslateX(newTranslateX);
-		//piece.setTranslateY(newTranslateY);
-		
-		
+
+		// iece.setTranslateX(newTranslateX);
+		// piece.setTranslateY(newTranslateY);
+
 		Move[] possibleMoves = piece.getPossibleMoves();
-	
+
 		if (possibleMoves != null && piece.isWhite() == isWhitesMove)
 		{
 			for (Move move : possibleMoves)
@@ -964,7 +1000,7 @@ public class Board
 				{
 					if (this.board[row][col] == null || this.board[row][col].isWhite() ^ piece.isWhite())
 					{
-						if ( this.board[row][col] != null)
+						if (this.board[row][col] != null)
 						{
 							Piece removePiece = this.board[row][col];
 							removePiece(removePiece);
@@ -978,10 +1014,10 @@ public class Board
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public Board copyBoard(Board originalBoard)
 	{
 		int whitePiecesLenght = originalBoard.getWhitePieces().length;
@@ -990,53 +1026,54 @@ public class Board
 		Piece[] originalBoardBlackPieces = originalBoard.getBlackPieces();
 		Piece[] newBoardWhitePieces = new Piece[whitePiecesLenght];
 		Piece[] newBoardBlackPieces = new Piece[blackPiecesLenght];
-		for(int i = 0; i < whitePiecesLenght; i++)
+		for (int i = 0; i < whitePiecesLenght; i++)
 		{
 			newBoardWhitePieces[i] = createPiece(originalBoardWhitePieces[i]);
 		}
-		for(int i = 0; i < blackPiecesLenght; i++)
+		for (int i = 0; i < blackPiecesLenght; i++)
 		{
 			newBoardBlackPieces[i] = createPiece(originalBoardBlackPieces[i]);
 		}
-		
+
 		return new Board(newBoardWhitePieces, newBoardBlackPieces);
 	}
+
 	private Piece createPiece(Piece piece)
 	{
 		int row = piece.getRow();
 		int col = piece.getCol();
 		boolean isWhite = piece.isWhite();
 		String name = piece.getName();
-		
-		switch(name)
+
+		switch (name)
 		{
-			case "Rook":
-			{
-				return new Rook(row, col, isWhite);
-			}
-			case "Knight":
-			{
-				return new Knight(row, col, isWhite);
-			}
-			case "Bishop":
-			{
-				return new Bishop(row, col, isWhite);
-			}
-			case "Queen":
-			{
-				return new Queen(row, col, isWhite);
-			}
-			case "King":
-			{
-				King king = new King(row, col, isWhite);
-				King originalKing = (King) piece;
-				king.setHasMoved(originalKing.HasMoved());
-				return king;
-			}
-			default:
-			{
-				return new Pawn(row, col, isWhite);
-			}
+		case "Rook":
+		{
+			return new Rook(row, col, isWhite);
+		}
+		case "Knight":
+		{
+			return new Knight(row, col, isWhite);
+		}
+		case "Bishop":
+		{
+			return new Bishop(row, col, isWhite);
+		}
+		case "Queen":
+		{
+			return new Queen(row, col, isWhite);
+		}
+		case "King":
+		{
+			King king = new King(row, col, isWhite);
+			King originalKing = (King) piece;
+			king.setHasMoved(originalKing.HasMoved());
+			return king;
+		}
+		default:
+		{
+			return new Pawn(row, col, isWhite);
+		}
 		}
 	}
 
@@ -1063,7 +1100,7 @@ public class Board
 		int col = piece.getCol();
 		this.board[row][col] = piece;
 	}
-	
+
 	private boolean canTakePiece(Piece piece, Piece maybePiece)
 	{
 		if (maybePiece != null)
@@ -1087,21 +1124,20 @@ public class Board
 		int col = pawn.getCol();
 		boolean isWhite = pawn.isWhite();
 		int index = getPieceIndex(pawn);
-		
+
 		Queen newQueen = new Queen(row, col, isWhite);
 		this.board[row][col] = newQueen;
-		if(isWhite)
+		if (isWhite)
 		{
 			// whitePieces[col] os where the pawn to be promoted is stored
 			whitePieces[index] = newQueen;
-		}
-		else
+		} else
 		{
 			blackPieces[index] = newQueen;
 		}
 		return newQueen;
 	}
-	
+
 	public int getPieceIndex(Piece piece)
 	{
 		if (piece.isWhite())
@@ -1113,8 +1149,7 @@ public class Board
 					return i;
 				}
 			}
-		}
-		else
+		} else
 		{
 			for (int i = 0; i < blackPieces.length; i++)
 			{
@@ -1132,23 +1167,22 @@ public class Board
 		if (iswhite)
 		{
 			return whiteKing.isCheck();
-		}
-		else
+		} else
 		{
 			return blackKing.isCheck();
 		}
 	}
-	
+
 	public Piece[] getWhitePieces()
 	{
 		return whitePieces;
 	}
-	
+
 	public Piece[] getBlackPieces()
 	{
 		return blackPieces;
 	}
-	
+
 	public void removePiece(Piece removePiece)
 	{
 		if (removePiece.isWhite())
@@ -1159,28 +1193,26 @@ public class Board
 			boolean reached = false;
 			for (int i = 0; i < lenght - 1; i++)
 			{
-				
-				if(removePiece.equals(whitePieces[i]))
+
+				if (removePiece.equals(whitePieces[i]))
 				{
 					reached = true;
 				}
 				if (reached)
 				{
-					newWhitePieces[i] = whitePieces[i+1];
+					newWhitePieces[i] = whitePieces[i + 1];
 					if (newWhitePieces[i].getName() == "King")
 					{
 						newKing = (King) newWhitePieces[i];
 					}
-				}
-				else
+				} else
 				{
 					newWhitePieces[i] = whitePieces[i];
 				}
 			}
 			whitePieces = newWhitePieces;
 			whiteKing = newKing;
-		}
-		else
+		} else
 		{
 			int lenght = blackPieces.length;
 			Piece[] newBlackPieces = new Piece[blackPieces.length - 1];
@@ -1188,21 +1220,20 @@ public class Board
 			boolean reached = false;
 			for (int i = 0; i < lenght - 1; i++)
 			{
-				
-				if(removePiece.equals(blackPieces[i]))
+
+				if (removePiece.equals(blackPieces[i]))
 				{
 					reached = true;
 				}
 				if (reached)
 				{
-					newBlackPieces[i] = blackPieces[i+1];
+					newBlackPieces[i] = blackPieces[i + 1];
 					if (newBlackPieces[i].getName() == "King")
 					{
 						newKing = (King) newBlackPieces[i];
 					}
-					
-				}
-				else
+
+				} else
 				{
 					newBlackPieces[i] = blackPieces[i];
 				}
