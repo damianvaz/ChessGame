@@ -298,7 +298,6 @@ public class Board
 		{
 			if (isWhite)
 			{
-				// int row = blackKing.getRow
 				if (blackKing.getRow() == move.getRow() && blackKing.getCol() == move.getCol())
 				{
 					blackKing.setCheck(true);
@@ -810,7 +809,7 @@ public class Board
 
 		// Adding castles moves if possible
 		King king = (King) piece;
-		if (!king.HasMoved())
+		if (!king.HasMoved() && !king.isCheck())
 		{
 			if (king.isWhite())
 			{
