@@ -56,52 +56,21 @@ public class App extends Application
 				{
 					mainWindow.eatPiece(maybePiece);
 				}
+				
+				int originalRow = piece.getRow();
 				int originalCol = piece.getCol();
 				boolean squareEmpty = (board.getPieceOnSquare(newSquareRow, newSquareCol) == null) ? true : false;
+				setPieceOnBoard(newSquareRow, newSquareCol, piece, newTranslateX, newTranslateY);
 
-				board.emptySquare(piece.getRow(), piece.getCol());
-				piece.setRow(newSquareRow);
-				piece.setCol(newSquareCol);
-				board.fillSquare(piece);
-				piece.setTranslateX(newTranslateX);
-				piece.setTranslateY(newTranslateY);
-				board.setLastMove(new Move(newSquareRow, newSquareCol));
-
-				// if is promoting a pawn
 				if (piece.getName() == "Pawn")
 				{
-					if (piece.isWhite() && piece.getRow() == 0)
+					Pawn pawn = (Pawn) piece;
+					checkPromotingPawn(pawn, newSquareRow);
+					
+					// check En passant
+					if(((piece.isWhite() && originalRow == 3) || (!piece.isWhite() && originalRow == 4)) && squareEmpty)
 					{
-						Queen newQueen = board.promotePawn(piece);
-						mainWindow.promotePawn(piece, newQueen);
-					} else if (!piece.isWhite() && piece.getRow() == 7)
-					{
-						Queen newQueen = board.promotePawn(piece);
-						mainWindow.promotePawn(piece, newQueen);
-					}
-					// En passant
-					if (piece.isWhite())
-					{
-						
-						if ((newSquareCol == originalCol - 1 || newSquareCol == originalCol + 1) && squareEmpty)
-						{
-							Piece enPassantPawn = board.getPieceOnSquare(newSquareRow + 1, newSquareCol);
-							if (enPassantPawn != null)
-							{
-								mainWindow.eatPiece(enPassantPawn);
-							}
-						}
-					} else
-					{
-						if ((newSquareCol == originalCol - 1 || newSquareCol == originalCol + 1)
-								&& squareEmpty)
-						{
-							Piece enPassantPawn = board.getPieceOnSquare(newSquareRow - 1, newSquareCol);
-							if (enPassantPawn != null)
-							{
-								mainWindow.eatPiece(enPassantPawn);
-							}
-						}
+						checkEnPassant(pawn, newSquareRow, newSquareCol, originalCol);						
 					}
 				}
 
@@ -111,40 +80,7 @@ public class App extends Application
 					if (!king.HasMoved())
 					{
 						king.setHasMoved(true);
-						if (king.isWhite())
-						{
-							if (newSquareCol == 6)
-							{
-								Rook rook = (Rook) board.getPieceOnSquare(7, 7);
-								board.emptySquare(rook.getRow(), rook.getCol());
-								mainWindow.kingSideCastle(rook);
-								board.fillSquare(rook);
-								System.out.println("" + king.getCol());
-							}
-							if (newSquareCol == 2)
-							{
-								Rook rook = (Rook) board.getPieceOnSquare(7, 0);
-								board.emptySquare(rook.getRow(), rook.getCol());
-								mainWindow.queenSideCastle(rook);
-								board.fillSquare(rook);
-							}
-						} else
-						{
-							if (newSquareCol == 6)
-							{
-								Rook rook = (Rook) board.getPieceOnSquare(0, 7);
-								board.emptySquare(rook.getRow(), rook.getCol());
-								mainWindow.kingSideCastle(rook);
-								board.fillSquare(rook);
-							}
-							if (newSquareCol == 2)
-							{
-								Rook rook = (Rook) board.getPieceOnSquare(0, 0);
-								board.emptySquare(rook.getRow(), rook.getCol());
-								mainWindow.queenSideCastle(rook);
-								board.fillSquare(rook);
-							}
-						}
+						checkIsCastling(king, newSquareCol);
 					}
 				}
 
@@ -156,7 +92,6 @@ public class App extends Application
 						rook.setHasMoved(true);
 					}
 				}
-
 				board.getAllPossibleMoves(isWhitesMove); // To check if king is checked
 				changePiecesToMove();
 				board.getAllPossibleMoves(isWhitesMove); // to get all the possible moves of the next movement
@@ -169,6 +104,97 @@ public class App extends Application
 			}
 
 		});
+	}
+
+	private void checkIsCastling(King king, int newSquareCol)
+	{
+		if (king.isWhite())
+		{
+			if (newSquareCol == 6)
+			{
+				Rook rook = (Rook) board.getPieceOnSquare(7, 7);
+				board.emptySquare(rook.getRow(), rook.getCol());
+				mainWindow.kingSideCastle(rook);
+				board.fillSquare(rook);
+				System.out.println("" + king.getCol());
+			}
+			if (newSquareCol == 2)
+			{
+				Rook rook = (Rook) board.getPieceOnSquare(7, 0);
+				board.emptySquare(rook.getRow(), rook.getCol());
+				mainWindow.queenSideCastle(rook);
+				board.fillSquare(rook);
+			}
+		} else
+		{
+			if (newSquareCol == 6)
+			{
+				Rook rook = (Rook) board.getPieceOnSquare(0, 7);
+				board.emptySquare(rook.getRow(), rook.getCol());
+				mainWindow.kingSideCastle(rook);
+				board.fillSquare(rook);
+			}
+			if (newSquareCol == 2)
+			{
+				Rook rook = (Rook) board.getPieceOnSquare(0, 0);
+				board.emptySquare(rook.getRow(), rook.getCol());
+				mainWindow.queenSideCastle(rook);
+				board.fillSquare(rook);
+			}
+		}
+		
+	}
+
+	private void checkEnPassant(Pawn pawn, int newSquareRow, int newSquareCol, int originalCol)
+	{
+		if (pawn.isWhite())
+		{
+			if ((newSquareCol == originalCol - 1 || newSquareCol == originalCol + 1))
+			{
+				Piece enPassantPawn = board.getPieceOnSquare(newSquareRow + 1, newSquareCol);
+				if (enPassantPawn != null)
+				{
+					mainWindow.eatPiece(enPassantPawn);
+				}
+			}
+		} else
+		{
+			if ((newSquareCol == originalCol - 1 || newSquareCol == originalCol + 1))
+			{
+				Piece enPassantPawn = board.getPieceOnSquare(newSquareRow - 1, newSquareCol);
+				if (enPassantPawn != null)
+				{
+					mainWindow.eatPiece(enPassantPawn);
+				}
+			}
+		}
+		
+	}
+
+	private void setPieceOnBoard(int newRow, int newCol, Piece piece, double newTranslateX, double newTranslateY)
+	{
+		board.emptySquare(piece.getRow(), piece.getCol());
+		piece.setRow(newRow);
+		piece.setCol(newCol);
+		board.fillSquare(piece);
+		piece.setTranslateX(newTranslateX);
+		piece.setTranslateY(newTranslateY);
+		board.setLastMove(new Move(newRow, newCol));
+	}
+	
+	private void checkPromotingPawn(Pawn pawn, int row)
+	{
+		if (pawn.isWhite() && row == 0)
+		{
+			pawn.setRow(row);
+			Queen newQueen = board.promotePawn(pawn);
+			mainWindow.promotePawn(pawn, newQueen);
+		} else if (!pawn.isWhite() && row == 7)
+		{
+			pawn.setRow(row);
+			Queen newQueen = board.promotePawn(pawn);
+			mainWindow.promotePawn(pawn, newQueen);
+		}
 	}
 
 	private void changePiecesToMove()
@@ -191,7 +217,6 @@ public class App extends Application
 
 	private void makeBlackPieces()
 	{
-		// TODO Make all the white pieces
 		Piece[] blackPieces = new Piece[16]; // 16 with all the pieces
 		blackPieces[0] = new Pawn(1, 0, false);
 		blackPieces[1] = new Pawn(1, 1, false);
@@ -215,7 +240,6 @@ public class App extends Application
 
 	private void makeWhitePieces()
 	{
-		// TODO Make all the black pieces
 		Piece[] whitePieces = new Piece[16]; // 16 with all the pieces
 		whitePieces[0] = new Pawn(6, 0, true);
 		whitePieces[1] = new Pawn(6, 1, true);
